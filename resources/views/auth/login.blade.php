@@ -1,57 +1,123 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+@extends('layouts.blankLayout')
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+@section('page-style')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}" />
+@endsection
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
-                autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@section('title', 'Profile Log in')
+@section('content')
+    <!-- Content -->
+
+    <div class="container-xxl">
+        <div class="authentication-wrapper authentication-basic container-p-y">
+            <div class="authentication-inner">
+                <!-- Register -->
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Logo -->
+                        <div class="app-brand justify-content-center">
+                            <a href="{{ URL::to('/') }}" class="app-brand-link gap-2">
+                                <span class="app-brand-logo demo">
+                                    <x-application-logo />
+                                </span>
+                                <span class="app-brand-text demo text-body fw-bold">DevTekniQ</span>
+                            </a>
+                        </div>
+                        <!-- /Logo -->
+
+                        <form action="{{ route('google.auth') }}" method="post" class="text-center mb-3">
+                            @csrf
+                            <button class="btn rounded-pill btn-outline-dark">
+                                <img src="{{ asset('assets/img/icons/brands/google.png') }}" alt=""
+                                    style="margin-right:  15px; width: 25px;">
+                                {{ __('Log in with Google') }}
+                            </button>
+                        </form>
+
+                        <div class="divider divider-dashed">
+                            <div class="divider-text">Or Log in with EMAIL / USERNAME</div>
+                        </div>
+
+                        <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email or Username</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Enter your email or username" required autofocus autocomplete="email" />
+
+                                <x-input-error :messages="$errors->get('email')" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                    required autofocus autocomplete="current-password" />
+
+                                <x-input-error :messages="$errors->get('password')" />
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="remember_me" />
+                                        <label class="form-check-label" for="remember_me"> Remember Me </label>
+                                    </div>
+
+
+                                    <div>
+
+                                        @if (Route::has('password.request'))
+                                            <a href="{{ route('password.request') }}">
+                                                <small>Forgot Password?</small>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <x-primary-button class="w-100">
+                                    {{ __('Sign in') }}
+                                </x-primary-button>
+                            </div>
+                        </form>
+
+                        <p class="text-center">
+                            <span>New on our platform?</span>
+                            <a href="{{ route('register') }}">
+                                <span>Create an account</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <!-- /Register -->
+            </div>
         </div>
+    </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    <!-- / Content -->
+    {{-- Profile Delete Toaster --}}
+    @if (session('status') === 'profile-deleted')
+        <div class="toasterWrap">
+            <div id="toast" class="toast">
+                <div class="iconBox"><i class="bx bx-bell icon"></i></div>
+                <div class="details">
+                    <span>Success</span>
+                    <p>Successfully Deleted Your Profile</p>
+                </div>
+            </div>
         </div>
+    @endif
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox"
-                    class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800"
-                    name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
+    {{-- user auth using google --}}
+    @if (session('status') === 'auth-error')
+        <div class="toasterWrap error">
+            <div id="toast" class="toast">
+                <div class="iconBox"><i class="bx bx-bell icon"></i></div>
+                <div class="details">
+                    <span>Error</span>
+                    <p>Google provider configuration is missing</p>
+                </div>
+            </div>
         </div>
+    @endif
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                    href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-
-    <form action="{{ route('google.auth') }}" method="post">
-        @csrf
-
-        <x-primary-button class="ms-3">
-            {{ __('Log in with google') }}
-        </x-primary-button>
-    </form>
-</x-guest-layout>
+@endsection

@@ -23,14 +23,12 @@ Route::get('/', function () {
 Route::post('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('google.auth');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/payment', [ProfileController::class, 'payment'])->name('profile.payment');
+    Route::get('/participants', [ProfileController::class, 'participants'])->name('profile.participants');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

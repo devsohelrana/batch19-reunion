@@ -19,7 +19,7 @@ class GoogleAuthController extends Controller
     {
         $google = Socialite::driver('google')->user();
 
-        // Fetch aditional data form google user  
+        // Fetch additional data from google user
         $googleUser = $google->user;
         $googleAttributes = $google->attributes;
 

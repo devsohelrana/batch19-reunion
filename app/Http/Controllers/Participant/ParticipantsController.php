@@ -1,24 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Participant;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
-class ProfileController extends Controller
+class ParticipantsController extends Controller
 {
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
-        return view('user.profile', [
-            'user' => $request->user(),
-        ]);
+        $userId = Auth::user()->id;
+        $user = User::findOrFail($userId);
+
+        return view('user.profile', compact('user'));
     }
 
     /**
@@ -37,18 +40,15 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    // participants payment
-    public function payment()
-    {
-        return view('user.payment');
-    }
-
     // participants list
     public function participants()
     {
-        $users = User::all();
+        $userId = Auth::user()->id;
+        $user = User::findOrFail($userId);
 
-        return view('user.participants', compact('users'));
+        $participants = User::all();
+
+        return view('user.participants', compact('user', 'participants'));
     }
 
     /**

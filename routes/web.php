@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Participant\ParticipantsController;
+use App\Http\Controllers\Participant\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,11 +25,13 @@ Route::post('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])-
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/payment', [ProfileController::class, 'payment'])->name('profile.payment');
-    Route::get('/participants', [ProfileController::class, 'participants'])->name('profile.participants');
+    Route::get('/profile', [ParticipantsController::class, 'edit'])->name('profile');
+    Route::patch('/profile', [ParticipantsController::class, 'update'])->name('profile.update');
+    Route::get('/participants', [ParticipantsController::class, 'participants'])->name('profile.participants');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    Route::get('/payment', [PaymentController::class, 'index'])->name('profile.payment');
 });
 
 require __DIR__.'/auth.php';

@@ -63,12 +63,12 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{ route('profile.payment') }}">
                             <span class="d-flex align-items-center align-middle">
                                 <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                <span
-                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                <span class="flex-grow-1 align-middle ms-1">Payment</span>
+                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-label-success"><i
+                                        class='bx bx-badge-check'></i></span>
                             </span>
                         </a>
                     </li>
@@ -78,7 +78,8 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <li>
-                            <a class="dropdown-item" href="route('logout')" onclick="event.preventDefault();
+                            <a class="dropdown-item" href="route('logout')"
+                                onclick="event.preventDefault();
                                         this.closest('form').submit();">
                                 <i class="bx bx-power-off me-2"></i>
                                 <span class="align-middle">Log Out</span>

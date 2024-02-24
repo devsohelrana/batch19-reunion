@@ -30,7 +30,42 @@ class ParticipantsController extends Controller
     }
 
     /**
-     * User details added database
+     * Participant avatar update
+     */
+    public function update(Request $request)
+    {
+        try {
+            $request->validate([
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:1024',
+            ]);
+
+            $user = Auth::user();
+
+            if ($request->hasFile('avatar')) {
+
+                $file = $request->file('avatar');
+                $fileName = $user->name . '.' . $file->getClientOriginalExtension();
+                $path = 'upload/user/';
+                $filePath = $request->avatar->move($path, $fileName);
+
+
+                // Store the avatar in the storage/app/public/avatars directory
+                // $avatarPath = $request->file('avatar')->store('public/avatars');
+
+                // Update the avatar column in the users table
+                $user->avatar = $filePath;
+                $user->save();
+            }
+            // Success message
+            return back()->with('status', 'avatar-success');
+        } catch (\Exception $e) {
+            // Error message
+            return back()->with('status', 'avatar-error');
+        }
+    }
+
+    /**
+     * Participant details added database
      */
     public function details(Request $request)
     {
@@ -67,18 +102,18 @@ class ParticipantsController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    // public function update(ProfileUpdateRequest $request): RedirectResponse
+    // {
+    //     $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    //     if ($request->user()->isDirty('email')) {
+    //         $request->user()->email_verified_at = null;
+    //     }
 
-        $request->user()->save();
+    //     $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
+    //     return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    // }
 
     // participants list
     public function participants()

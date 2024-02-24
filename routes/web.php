@@ -27,7 +27,7 @@ Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ParticipantsController::class, 'index'])->name('profile');
     Route::post('/profile-detail', [ParticipantsController::class, 'details'])->name('profile.detail');
-    Route::patch('/profile', [ParticipantsController::class, 'update'])->name('profile.update');
+    Route::post('/avatar', [ParticipantsController::class, 'update'])->name('profile.update');
     Route::get('/participants', [ParticipantsController::class, 'participants'])->name('profile.participants');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 

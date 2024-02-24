@@ -1,13 +1,41 @@
 @extends('user.appUser')
 
-@section('title', 'User Payment')
-
+@section('title', 'Participant Payment')
 @section('usersection')
+
     <div class="card">
         <h5 class="card-header">Profile Details</h5>
         <!-- Account -->
-        <div class="card-body">
-            <h2>Payment</h2>
+        <div class="row">
+            <div class="col-md">
+                <div class="row g-0 d-flex justify-content-center align-items-center">
+                    <div class="col-md-6">
+                        <img class="card-img card-img-left" src="../assets/img/illustrations/payment.svg" alt="Card image">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h1 class="payTitle">
+                                <span class="subTitle">1st reunion powered by</span> <br>
+                                BATCH 19
+                            </h1>
+                            <p class="card-text mt-5">
+                                This is a wider card with supporting text below as a natural lead-in to additional
+                                content.
+                                This content is a little bit longer.
+                            </p>
+
+                            <div class="payBkash">
+                                <img src="../assets/img/bKash.svg" class="card-img  card-img-right" alt="">
+                            </div>
+
+                            <a class="btn btn-primary w-100" href="kfkfksdfksd">
+                                <span class="tf-icons bx bx-wallet me-1"></span>
+                                Complete Payment
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /Account -->
 

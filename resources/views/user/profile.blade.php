@@ -12,7 +12,9 @@
         <!-- Account -->
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-center flex-column gap-2">
-                <form id="formAccountSettings" method="POST" onsubmit="return false">
+                <form id="formAccountSettings" method="POST" action="{{ route('profile.update') }}"
+                    enctype="multipart/form-data">
+                    @csrf
                     <div class="imgUplod">
                         <label for="avatar" class="selectFile">
                             <i class='bx bxs-camera'></i>
@@ -29,10 +31,32 @@
                     </div>
                     <p class="text-muted my-2">Allowed JPG, GIF or PNG. Max size of 1024K</p>
                     <div class="button-wrapper d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                        <button class="btn btn-primary me-2">Update</button>
                     </div>
                 </form>
             </div>
+            @if (session('status') === 'avatar-success')
+                <div class="toasterWrap">
+                    <div id="toast" class="toast">
+                        <div class="iconBox"><i class="bx bx-bell icon"></i></div>
+                        <div class="details">
+                            <span>Success</span>
+                            <p>Successfully Update Your Avatar</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if (session('status') === 'avatar-error')
+                <div class="toasterWrap error">
+                    <div id="toast" class="toast">
+                        <div class="iconBox"><i class="bx bx-bell icon"></i></div>
+                        <div class="details">
+                            <span>Faild</span>
+                            <p>Ops! Update Faild. Please try again.</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
         <hr class="my-0" />
         <div class="card-body">

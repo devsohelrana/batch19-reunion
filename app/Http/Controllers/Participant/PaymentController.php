@@ -13,9 +13,13 @@ class PaymentController extends Controller
     // participants payment
     public function index()
     {
-        $userId = Auth::user()->id;
+        $user = Auth::user();
+
+        $userId = $user->id;
         $user = User::findOrFail($userId);
 
-        return view('user.payment', compact('user'));
+        $details = $user->ParticipantDetails()->first();
+
+        return view('user.payment', compact('user', 'details'));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Participant;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\ParticipantDetails;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -16,12 +17,51 @@ class ParticipantsController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function index(): View
     {
-        $userId = Auth::user()->id;
+        $user = Auth::user();
+
+        $userId = $user->id;
         $user = User::findOrFail($userId);
 
-        return view('user.profile', compact('user'));
+        $details = $user->ParticipantDetails()->first();
+
+        return view('user.profile', compact('user', 'details'));
+    }
+
+    /**
+     * User details added database
+     */
+    public function details(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $ParticipantDetails = $request->validate([
+                'name' => 'required',
+                'phoneNumber' => 'required|digits:11',
+                'gender' => 'required',
+                'group' => 'required',
+                'marital_status' => 'required',
+                'division' => 'required',
+                'district' => 'required',
+                'upazila' => 'required',
+                'thana' => 'required',
+            ]);
+
+            // dd($ParticipantDetails);
+
+            $user->ParticipantDetails()->updateOrCreate(
+                ['user_id' => $user->id],
+                $ParticipantDetails
+            );
+
+            // Success message
+            return redirect('/payment')->with('status', 'detail-success');
+        } catch (\Exception) {
+            // Error message
+            return redirect()->back()->with('status', 'detail-error');
+        }
     }
 
     /**
@@ -43,12 +83,16 @@ class ParticipantsController extends Controller
     // participants list
     public function participants()
     {
-        $userId = Auth::user()->id;
+        $user = Auth::user();
+
+        $userId = $user->id;
         $user = User::findOrFail($userId);
+
+        $details = $user->ParticipantDetails()->first();
 
         $participants = User::all();
 
-        return view('user.participants', compact('user', 'participants'));
+        return view('user.participants', compact('user', 'details', 'participants'));
     }
 
     /**

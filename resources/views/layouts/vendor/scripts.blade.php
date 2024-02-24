@@ -16,4 +16,6 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 
 <!-- Page JS -->
+<script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
+
 @yield('page-script')

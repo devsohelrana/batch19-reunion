@@ -18736,3 +18736,17 @@ ul.errorText li {
 .imgUplod input[type="file"] {
     display: none;
 }
+
+
+/* error text */
+ul.errorText {
+    margin: 0;
+    padding: 0;
+}
+
+ul.errorText li {
+    list-style: none;
+    padding: 3px;
+    font-size: 14px;
+    transition: 0.5s ease-in;
+}

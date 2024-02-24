@@ -25,7 +25,8 @@ Route::post('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])-
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ParticipantsController::class, 'edit'])->name('profile');
+    Route::get('/profile', [ParticipantsController::class, 'index'])->name('profile');
+    Route::post('/profile-detail', [ParticipantsController::class, 'details'])->name('profile.detail');
     Route::patch('/profile', [ParticipantsController::class, 'update'])->name('profile.update');
     Route::get('/participants', [ParticipantsController::class, 'participants'])->name('profile.participants');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -34,4 +35,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment', [PaymentController::class, 'index'])->name('profile.payment');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
